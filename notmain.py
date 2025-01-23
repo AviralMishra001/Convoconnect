@@ -171,6 +171,5 @@ else:
         if message:
             save_message(st.session_state.channel_id, st.session_state.username, message)
             st.session_state["message_input"] = ""
-            st.rerun()
 
     st.text_input("Type your message and press Enter", key="message_input", on_change=send_message)
