@@ -151,38 +151,25 @@ if st.session_state.username is None or st.session_state.channel_id is None:
                 st.error("Invalid Channel ID.")
 else:
     # Chat interface
-    if st.session_state.username is not None and st.session_state.channel_id is not None:
-        channel_name = get_channel_name(st.session_state.channel_id)
-        st.sidebar.markdown(f"**Welcome, {st.session_state.username}!**")
-        st.sidebar.markdown(f"**Channel: {channel_name}**")
-        active_users = get_active_users(st.session_state.channel_id)
-        st.sidebar.markdown("### Active Users")
-        for user in active_users:
-            st.sidebar.markdown(f"- {user}")
+    channel_name = get_channel_name(st.session_state.channel_id)
+    st.sidebar.markdown(f"**Welcome, {st.session_state.username}!**")
+    st.sidebar.markdown(f"**Channel: {channel_name}**")
+    active_users = get_active_users(st.session_state.channel_id)
+    st.sidebar.markdown("### Active Users")
+    for user in active_users:
+        st.sidebar.markdown(f"- {user}")
 
     # Chat messages
-        st.markdown(f"### Chat: {channel_name}")
-
-    # Add a placeholder to continuously update the chat messages
-        chat_placeholder = st.empty()
-
-        def display_messages():
-            messages = get_messages(st.session_state.channel_id)
-            with chat_placeholder:
-                st.empty()  # Clear previous messages
-                for msg in messages:
-                    st.markdown(f"**{msg['username']}** ({msg['timestamp']}): {msg['text']}")
-
-    # Periodically refresh messages every second
-        display_messages()
-        time.sleep(1)
-        st.rerun()
+    st.markdown(f"### Chat: {channel_name}")
+    messages = get_messages(st.session_state.channel_id)
+    for msg in messages:
+        st.markdown(f"**{msg['username']}** ({msg['timestamp']}): {msg['text']}")
 
     # Send message
-        def send_message():
-            message = st.session_state["message_input"].strip()
-            if message:
-                save_message(st.session_state.channel_id, st.session_state.username, message)
-                st.session_state["message_input"] = ""
+    def send_message():
+        message = st.session_state["message_input"].strip()
+        if message:
+            save_message(st.session_state.channel_id, st.session_state.username, message)
+            st.session_state["message_input"] = ""
 
-        st.text_input("Type your message and press Enter", key="message_input", on_change=send_message)
+    st.text_input("Type your message and press Enter", key="message_input", on_change=send_message)
