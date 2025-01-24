@@ -165,6 +165,7 @@ else:
     for msg in messages:
         st.markdown(f"**{msg['username']}** ({msg['timestamp']}): {msg['text']}")
 
+    time.sleep(1)
     # Send message
     def send_message():
         message = st.session_state["message_input"].strip()
